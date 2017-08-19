@@ -1,239 +1,86 @@
 ---
-title: API Reference
+title: OpenAI Lab Doc
 
-language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
+language_tabs:
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
+  - <a href='https://github.com/kengz/openai_lab'>OpenAI Lab Github</a>
+  - <a href='https://github.com/openai/gym'>OpenAI Gym Github</a>
+  - <a href='https://github.com/fchollet/keras'>Keras Github</a>
+  - <a href='https://youtu.be/qBhLoeijgtA'>RL Tutorial video part 1/2</a>
+  - <a href='https://youtu.be/wNSlZJGdodE'>RL Tutorial video part 2/2</a>
 
 includes:
-  - errors
+  - INSTALLATION
+  - USAGE
+  - EXPERIMENTS
+  - ANALYSIS
+  - SOLUTIONS
+  - METRICS
+  - ALGORITHMS
+  - AGENTS
+  - DEVELOPMENT
+  - CONTRIBUTING
+  - MOTIVATIONS
 
 search: true
 ---
 
-# Introduction
+# OpenAI Lab </br> [![GitHub release](https://img.shields.io/github/release/kengz/openai_lab.svg)](https://github.com/kengz/openai_lab) [![CircleCI](https://circleci.com/gh/kengz/openai_lab.svg?style=shield)](https://circleci.com/gh/kengz/openai_lab) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9e55f845b10b4b51b213620bfb98e4b3)](https://www.codacy.com/app/kengzwl/openai_lab?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kengz/openai_lab&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/9e55f845b10b4b51b213620bfb98e4b3)](https://www.codacy.com/app/kengzwl/openai_lab?utm_source=github.com&utm_medium=referral&utm_content=kengz/openai_lab&utm_campaign=Badge_Coverage) [![GitHub stars](https://img.shields.io/github/stars/kengz/openai_lab.svg?style=social&label=Star)](https://github.com/kengz/openai_lab) [![GitHub forks](https://img.shields.io/github/forks/kengz/openai_lab.svg?style=social&label=Fork)](https://github.com/kengz/openai_lab)
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+_An experimentation framework for Reinforcement Learning using OpenAI Gym, Tensorflow, and Keras._
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+_OpenAI Lab_ is created to do Reinforcement Learning (RL) like science - _theorize, experiment_. It provides an easy interface to [OpenAI Gym](https://gym.openai.com/) and [Keras](https://keras.io/), with an automated experimentation and evaluation framework.
 
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
 
-# Authentication
+### Features
 
-> To authorize, use this code:
+1. **Unified RL environment and agent interface** using OpenAI Gym, Tensorflow, Keras, so you can focus on developing the algorithms.
+2. **[Core RL algorithms implementations](#agents-matrix), with reusable modular components** for developing deep RL algorithms.
+3. **[An experimentation framework](#experiments)** for running hundreds of trials of hyperparameter optimizations, with logs, plots and analytics for testing new RL algorithms. Experimental settings are stored in standardized JSONs for reproducibility and comparisons.
+4. **[Automated analytics of the experiments](#analysis)** for evaluating the RL agents and environments, and to help pick the best solution.
+5. **The [Fitness Matrix](#fitness-matrix)**, a table of the best scores of RL algorithms v.s. the environments; useful for research.
 
-```ruby
-require 'kittn'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+With OpenAI Lab, we could focus on researching the essential elements of reinforcement learning such as the algorithm, policy, memory, and parameter tuning. It allows us to build agents efficiently using existing components with the implementations from research ideas. We could then test the research hypotheses systematically by running experiments.
 
-```python
-import kittn
+*Read more about the research problems the Lab addresses in [Motivations](#motivations). Ultimately, the Lab is a generalized framework for doing reinforcement learning, agnostic of OpenAI Gym and Keras. E.g. Pytorch-based implementations are on the roadmap.*
 
-api = kittn.authorize('meowmeowmeow')
-```
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
+### Implemented Algorithms
 
-```javascript
-const kittn = require('kittn');
+A list of the core RL algorithms implemented/planned.
 
-let api = kittn.authorize('meowmeowmeow');
-```
+To see their scores against OpenAI gym environments, go to **[Fitness Matrix](#fitness-matrix)**.
 
-> Make sure to replace `meowmeowmeow` with your API key.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+|algorithm|implementation|eval score (pending)|
+|:---|:---|:---|
+|[DQN](https://arxiv.org/abs/1312.5602)|[DQN](https://github.com/kengz/openai_lab/blob/master/rl/agent/dqn.py)|-|
+|[Double DQN](https://arxiv.org/abs/1509.06461)|[DoubleDQN](https://github.com/kengz/openai_lab/blob/master/rl/agent/double_dqn.py)|-|
+|[Dueling DQN](https://arxiv.org/abs/1511.06581)|-|-|
+|Sarsa|[DeepSarsa](https://github.com/kengz/openai_lab/blob/master/rl/agent/deep_sarsa.py)|-|
+|Off-Policy Sarsa|[OffPolicySarsa](https://github.com/kengz/openai_lab/blob/master/rl/agent/offpol_sarsa.py)|-|
+|[PER (Prioritized Experience Replay)](https://arxiv.org/abs/1511.05952)|[PrioritizedExperienceReplay](https://github.com/kengz/openai_lab/blob/master/rl/memory/prioritized_exp_replay.py)|-|
+|[CEM (Cross Entropy Method)](https://en.wikipedia.org/wiki/Cross-entropy_method)|next|-|
+|[REINFORCE](http://incompleteideas.net/sutton/williams-92.pdf)|-|-|
+|[DPG (Deterministic Policy Gradient) off-policy actor-critic](http://jmlr.org/proceedings/papers/v32/silver14.pdf)|[ActorCritic](https://github.com/kengz/openai_lab/blob/master/rl/agent/actor_critic.py)|-|
+|[DDPG (Deep-DPG) actor-critic with target networks](https://arxiv.org/abs/1509.02971)|[DDPG](https://github.com/kengz/openai_lab/blob/master/rl/agent/ddpg.py)|-|
+|[A3C (asynchronous advantage actor-critic)](https://arxiv.org/pdf/1602.01783.pdf)|-|-|
+|Dyna|next|-|
+|[TRPO](https://arxiv.org/abs/1502.05477)|-|-|
+|Q*(lambda)|-|-|
+|Retrace(lambda)|-|-|
+|[Neural Episodic Control (NEC)](https://arxiv.org/abs/1703.01988)|-|-|
+|[EWC (Elastic Weight Consolidation)](https://arxiv.org/abs/1612.00796)|-|-|
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
-`Authorization: meowmeowmeow`
+### Run the Lab
 
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
+Next, see [Installation](#installation) and jump to [Quickstart](#quickstart).
 
-# Kittens
 
-## Get All Kittens
+<div style="max-width: 100%"><img alt="Timelapse of OpenAI Lab" src="./images/lab_demo_dqn.gif" /></div>
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
-
-This endpoint retrieves a specific kitten.
-
-### HTTP Request
-
-`DELETE http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+*Timelapse of OpenAI Lab, solving CartPole-v0.*
 

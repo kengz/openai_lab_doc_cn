@@ -6,9 +6,33 @@
 
 <p align="center">Slate helps you create beautiful, intelligent, responsive API documentation.</p>
 
-<p align="center"><img src="https://raw.githubusercontent.com/lord/img/master/screenshot-slate.png" width=700 alt="Screenshot of Example Documentation created with Slate"></p>
+<p align="center"><img src="https://dl.dropboxusercontent.com/u/95847291/github%20images/slate/slate_screenshot_new.png" width=700 alt="Screenshot of Example Documentation created with Slate"></p>
 
 <p align="center"><em>The example above was created with Slate. Check it out at <a href="https://lord.github.io/slate">lord.github.io/slate</a>.</em></p>
+
+
+## OpenAI Lab Doc
+
+### Installation and Usage
+
+1. safer to git clone another copy of OpenAI Lab to your local, then do `git check doc` into the doc branch (to prevent file conflicts, and to allow you to work continuously without problems switching branches)
+2. install dependencies: you should have ruby already. do `bundle install`
+3. run `bundle exec middleman server`. Go to `localhost:4567` on your browser.
+4. edit the `source/` folder, save files, then refresh the browser to see new changes.
+5. git commit ur stuff (becareful with files; also images needs to be `git add -f` because they are gitignored). push to the doc branch
+6. run `./deploy.sh` and it will deploy. check kengz.me/openai_lab on your browser
+
+### Edit the files
+1. [simple markdown guide](https://github.com/lord/slate/wiki/Markdown-Syntax); more reference on the already existing docs in `source/includes/`
+2. create new section of doc as `source/includes/_SOME_SECTION.md`. Edit it.
+3. include that section in `source/index.html.md` top section `includes`. Note that ordering is reflected there.
+
+### Deploy
+
+- commit and push the changes to the `doc` branch
+- run `./deploy`
+- visit [kengz.me/openai_lab](http://kengz.me/openai_lab)
+
 
 Features
 ------------
@@ -37,7 +61,7 @@ Getting Started with Slate
 You're going to need:
 
  - **Linux or OS X** — Windows may work, but is unsupported.
- - **Ruby, version 2.3.1 or newer**
+ - **Ruby, version 2.2.5 or newer**
  - **Bundler** — If Ruby is already installed, but the `bundle` command doesn't work, just run `gem install bundler` in a terminal.
 
 ### Getting Set Up
@@ -62,16 +86,13 @@ Now that Slate is all set up on your machine, you'll probably want to learn more
 
 If you'd prefer to use Docker, instructions are available [in the wiki](https://github.com/lord/slate/wiki/Docker).
 
-### Note on JavaScript Runtime
-
-For those who don't have JavaScript runtime or are experiencing JavaScript runtime issues with ExecJS, it is recommended to add the [rubyracer gem](https://github.com/cowboyd/therubyracer) to your gemfile and run `bundle` again.
-
 Companies Using Slate
 ---------------------------------
 
 * [NASA](https://api.nasa.gov)
 * [IBM](https://docs.cloudant.com/api.html)
 * [Sony](http://developers.cimediacloud.com)
+* [Mozilla](http://mozilla.github.io/localForage/)
 * [Best Buy](https://bestbuyapis.github.io/api-documentation/)
 * [Travis-CI](https://docs.travis-ci.com/api/)
 * [Greenhouse](https://developers.greenhouse.io/harvest.html)
@@ -82,7 +103,6 @@ Companies Using Slate
 * [Coinbase](https://developers.coinbase.com/api)
 * [Parrot Drones](http://developer.parrot.com/docs/bebop/)
 * [Fidor Bank](http://docs.fidor.de/)
-* [Scale](https://docs.scaleapi.com/)
 
 You can view more in [the list on the wiki](https://github.com/lord/slate/wiki/Slate-in-the-Wild).
 
@@ -103,7 +123,7 @@ Thanks to the following people who have submitted major pull requests:
 - [@realityking](https://github.com/realityking)
 - [@cvkef](https://github.com/cvkef)
 
-Also, thanks to [Sauce Labs](http://saucelabs.com) for sponsoring the development of the responsive styles.
+Also, thanks to [Sauce Labs](http://saucelabs.com) for helping sponsor the project.
 
 Special Thanks
 --------------------

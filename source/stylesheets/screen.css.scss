@@ -46,7 +46,16 @@ html, body {
   width: 20px;
 }
 
-.toc-wrapper {
+@mixin embossed-bg {
+  background:
+    linear-gradient(to bottom, rgba(#000, 0.2), rgba(#000, 0) 8px),
+    linear-gradient(to top, rgba(#000, 0.2), rgba(#000, 0) 8px),
+    linear-gradient(to bottom, rgba($nav-embossed-border-top, 1), rgba($nav-embossed-border-top, 0) 1.5px),
+    linear-gradient(to top, rgba($nav-embossed-border-bottom, 1), rgba($nav-embossed-border-bottom, 0) 1.5px),
+    $nav-subitem-bg;
+}
+
+.tocify-wrapper {
   transition: left 0.3s ease-in-out;
 
   overflow-y: auto;
@@ -101,8 +110,8 @@ html, body {
     }
   }
 
-  .logo {
-    margin-bottom: $logo-margin;
+  img+.tocify, .lang-selector+.tocify {
+    margin-top: $logo-margin;
   }
 
   .search-results {
@@ -114,11 +123,12 @@ html, body {
     transition-property: height, margin;
     transition-duration: 180ms;
     transition-timing-function: ease-in-out;
-    background: $nav-subitem-bg;
     &.visible {
       height: 30%;
       margin-bottom: 1em;
     }
+
+    @include embossed-bg;
 
     li {
       margin: 1em $nav-padding;
@@ -136,6 +146,14 @@ html, body {
   }
 
 
+  .tocify-item>a, .toc-footer li {
+    padding: 0 $nav-padding 0 $nav-padding;
+    display: block;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
   // The Table of Contents is composed of multiple nested
   // unordered lists.  These styles remove the default
   // styling of an unordered list because it is ugly.
@@ -150,30 +168,32 @@ html, body {
     color: $nav-text;
     transition-property: background;
     transition-timing-function: linear;
-    transition-duration: 200ms;
+    transition-duration: 230ms;
   }
 
   // This is the currently selected ToC entry
-  .toc-link.active {
+  .tocify-focus {
+    box-shadow: 0px 1px 0px $nav-active-shadow;
     background-color: $nav-active-bg;
     color: $nav-active-text;
   }
 
-  // this is parent links of the currently selected ToC entry
-  .toc-link.active-parent {
-    background-color: $nav-active-parent-bg;
-    color: $nav-active-parent-text;
-  }
-
-  .toc-list-h2 {
-    display: none;
+  // Subheaders are the submenus that slide open
+  // in the table of contents.
+  .tocify-subheader {
+    display: none; // tocify will override this when needed
     background-color: $nav-subitem-bg;
     font-weight: 500;
-  }
+    .tocify-item>a {
+      padding-left: $nav-padding + $nav-indent;
+      font-size: 12px;
+    }
 
-  .toc-h2 {
-    padding-left: $nav-padding + $nav-indent;
-    font-size: 12px;
+    // for embossed look:
+    @include embossed-bg;
+    &>li:last-child {
+      box-shadow: none; // otherwise it'll overflow out of the subheader
+    }
   }
 
   .toc-footer {
@@ -196,19 +216,7 @@ html, body {
       text-decoration: none;
     }
   }
-}
 
-.toc-link, .toc-footer li {
-  padding: 0 $nav-padding 0 $nav-padding;
-  display: block;
-  overflow-x: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  text-decoration: none;
-  color: #fff;
-  transition-property: background;
-  transition-timing-function: linear;
-  transition-duration: 130ms;
 }
 
 // button to show navigation on mobile devices
@@ -316,8 +324,6 @@ html, body {
 // This is all the stuff with the light background in the left half of the page
 
 .content {
-  // fixes webkit rendering bug for some: see #538
-  -webkit-transform: translateZ(0);
   // to place content above the dark box
   position: relative;
   z-index: 30;
@@ -333,6 +339,7 @@ html, body {
     padding: 0 $main-padding;
     box-sizing: border-box;
     display: block;
+    text-shadow: $main-embossed-text-shadow;
 
     @extend %left-col;
   }
@@ -348,14 +355,14 @@ html, body {
 
   h1 {
     @extend %header-font;
-    font-size: 25px;
+    font-size: 30px;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
+    border-bottom: 1px solid #ccc;
     margin-bottom: $h1-margin-bottom;
     margin-top: 2em;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    background-color: #fdfdfd;
+    border-top: 1px solid #ddd;
+    background-image: linear-gradient(to bottom, #fff, #f9f9f9);
   }
 
   h1:first-child, div:first-child + h1 {
@@ -365,13 +372,13 @@ html, body {
 
   h2 {
     @extend %header-font;
-    font-size: 19px;
+    font-size: 20px;
     margin-top: 4em;
     margin-bottom: 0;
     border-top: 1px solid #ccc;
     padding-top: 1.2em;
     padding-bottom: 1.2em;
-    background-image: linear-gradient(to bottom, rgba(#fff, 0.2), rgba(#fff, 0));
+    background-image: linear-gradient(to bottom, rgba(#fff, 0.4), rgba(#fff, 0));
   }
 
   // h2s right after h1s should bump right up
@@ -400,8 +407,12 @@ html, body {
 
   table {
     margin-bottom: 1em;
+    margin-right: 0;
     overflow: auto;
+    display: inline-block;
+    width: 100%;
     th,td {
+      white-space: nowrap;
       text-align: left;
       vertical-align: top;
       line-height: 1.6;
@@ -409,12 +420,17 @@ html, body {
 
     th {
       padding: 5px 10px;
+      background-color: lighten($main-bg,2.4%);
       border-bottom: 1px solid #ccc;
       vertical-align: bottom;
     }
 
     td {
       padding: 10px;
+    }
+
+    td:last-child {
+      width: 100%;
     }
 
     tr:last-child {
@@ -463,6 +479,7 @@ html, body {
   aside {
     padding-top: 1em;
     padding-bottom: 1em;
+    text-shadow: 0 1px 0 lighten($aside-notice-bg, 15%);
     margin-top: 1.5em;
     margin-bottom: 1.5em;
     background: $aside-notice-bg;
@@ -470,10 +487,12 @@ html, body {
 
     &.warning {
       background-color: $aside-warning-bg;
+      text-shadow: 0 1px 0 lighten($aside-warning-bg, 15%);
     }
 
     &.success {
       background-color: $aside-success-bg;
+      text-shadow: 0 1px 0 lighten($aside-success-bg, 15%);
     }
   }
 
@@ -500,6 +519,7 @@ html, body {
     margin: -2px;
     border-radius: 4px;
     border: 1px solid #F7E633;
+    text-shadow: 1px 1px 0 #666;
     background: linear-gradient(to top left, #F7E633 0%, #F1D32F 100%);
   }
 }
@@ -514,6 +534,7 @@ html, body {
     background-color: $code-bg;
     color: #fff;
 
+    padding: 2em $main-padding;
     margin: 0;
     width: $examples-width;
 
@@ -521,6 +542,7 @@ html, body {
     clear:right;
 
     box-sizing: border-box;
+    text-shadow: 0px 1px 2px rgba(0,0,0,0.4);
 
     @extend %right-col;
 
@@ -535,16 +557,16 @@ html, body {
 
   pre {
     @extend %code-font;
-    padding-top: 2em;
-    padding-bottom: 2em;
-    padding: 2em $main-padding;
   }
 
   blockquote {
     &>p {
       background-color: $code-annotation-bg;
-      padding: $code-annotation-padding 2em;
-      color: #eee;
+      border-radius: 5px;
+      padding: $code-annotation-padding;
+      color: #ccc;
+      border-top: 1px solid #000;
+      border-bottom: 1px solid #404040;
     }
   }
 }
@@ -556,7 +578,7 @@ html, body {
 // There are also a couple styles disperesed
 
 @media (max-width: $tablet-width) {
-  .toc-wrapper {
+  .tocify-wrapper {
     left: -$nav-width;
 
     &.open {
@@ -572,7 +594,7 @@ html, body {
     display: block;
   }
 
-  .toc-link {
+  .tocify-wrapper .tocify-item > a {
     padding-top: 0.3em;
     padding-bottom: 0.3em;
   }
@@ -587,7 +609,7 @@ html, body {
     margin-right: 0;
   }
 
-  .toc-wrapper .lang-selector {
+  .tocify-wrapper .lang-selector {
     display: block;
   }
 

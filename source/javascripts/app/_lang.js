@@ -15,14 +15,13 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations
 under the License.
 */
-;(function () {
+(function (global) {
   'use strict';
 
   var languages = [];
 
-  window.setupLanguages = setupLanguages;
-  window.activateLanguage = activateLanguage;
-  window.getLanguageFromQueryString = getLanguageFromQueryString;
+  global.setupLanguages = setupLanguages;
+  global.activateLanguage = activateLanguage;
 
   function activateLanguage(language) {
     if (!language) return;
@@ -31,13 +30,13 @@ under the License.
     $(".lang-selector a").removeClass('active');
     $(".lang-selector a[data-language-name='" + language + "']").addClass('active');
     for (var i=0; i < languages.length; i++) {
-      $(".highlight.tab-" + languages[i]).hide();
+      $(".highlight." + languages[i]).hide();
       $(".lang-specific." + languages[i]).hide();
     }
-    $(".highlight.tab-" + language).show();
+    $(".highlight." + language).show();
     $(".lang-specific." + language).show();
 
-    window.recacheHeights();
+    global.toc.calculateHeights();
 
     // scroll to the new location of the position
     if ($(window.location.hash).get(0)) {
@@ -160,5 +159,8 @@ under the License.
       activateLanguage(language);
       return false;
     });
+    window.onpopstate = function() {
+      activateLanguage(getLanguageFromQueryString());
+    };
   });
-})();
+})(window);
