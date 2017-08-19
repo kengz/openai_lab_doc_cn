@@ -64,8 +64,8 @@ source activate openai_lab
 
 运行 `./bin/copy-config`。 这将从模板创建配置文件，需要 Lab 使用 [usage](#usage):
 
-- `config/default.json` 用于本地开发，当 `grunt` 在没有 `-prod` 生产标志的情况下运行时使用。
-- `config/production.json` 当 `grunt -prod` 与生产标志`-prod`一起运行时，用于生产 Lab 运行。
+- `config/default.json` 用于本地开发 (development mode)，当 `grunt` 在没有 `-prod` 生产标志的情况下运行时使用。
+- `config/production.json` 当 `grunt -prod` 与生产标志`-prod`一起运行时，用于生产 Lab 运行(production mode)。
 
 
 ## <a name="quickstart"></a>快速入门

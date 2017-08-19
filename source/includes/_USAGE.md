@@ -1,15 +1,14 @@
-# <a name="usage"></a>Usage
+# <a name="usage"></a>用法 Usage
 
-*To understand the Lab's [Framework and Demo, skip to the next section.](#structure)*
+*了解实验室的框架和演示，跳到下一节。 [Framework and Demo, skip to the next section.](#structure)*
 
-The general flow for running a production lab is:
+运行生产实验室的一般流程是：
 
-1. Specify experiment specs in `rl/spec/*_experiment_specs.json`, e.g. `"dqn", "lunar_dqn"`
-2. Specify the names of the experiments to run in `config/production.json`
-3. Run the lab, e.g. `grunt -prod -resume`
+1. 在 `rl/spec/*_experiment_specs.json` 中指定实验规范，例如 `"dqn", "lunar_dqn"`
+2.指定要在 `config/production.json` 中运行的实验的名称
+3.运行实验室，例如 `grunt -prod -resume`
 
-
-Grunt will read off the JSON file in `config/`, which looks like:
+Grunt将读取 `config/` 中的JSON文件，它看起来像：
 
 ```json
 {
@@ -24,12 +23,11 @@ Grunt will read off the JSON file in `config/`, which looks like:
 ```
 
 
-## Commands
+## 命令 Commands
 
-We use [Grunt](http://gruntjs.com/) to run the lab - set up experiments, pause/resume lab, run analyses, sync data, notify on completion. Internally `grunt` runs the `python` command (harder to use), logged to stdout as `>> Composed command: ... python3 main.py -bp -t 5 -e dev_dqn | tee ./data/terminal.log;`
+我们使用 [Grunt](http://gruntjs.com/) 运行实验室 - 设置实验，暂停/恢复实验室，运行分析，同步数据，完成后通知。 在内部 `grunt` 运行 `python` 命令（更难使用），记录到 stdout为 `>> Composed command: ... python3 main.py -bp -t 5 -e dev_dqn | tee ./data/terminal.log;`
 
-
-The useful grunt commands are:
+有用的grunt命令是：
 
 ```shell
 # when developing experiments specified in default.json
@@ -49,30 +47,30 @@ grunt -prod -remote -resume
 grunt clear
 ```
 
-See below for the full [Grunt Command Reference](#grunt-cmd) or the [Python Command Reference](#python-cmd).
+有关完整的 [Grunt Command Reference](#grunt-cmd) 或 [Python Command Reference](#python-cmd)，请参见下文。
 
 
 **development** mode:
 
-- All grunt commands default to this mode
-- specify your dev experiment in `config/default.json`
-- use only when developing your new algorithms
-- the file-sync is in mock mode (emulated log without real file copying)
-- no auto-notification
+- 所有grunt命令默认为此模式
+- 在 `config / default.json` 中指定你的dev实验
+- 仅在开发新算法时使用
+- 文件同步处于模拟模式（模拟日志没有真正的文件复制）
+- 没有自动通知
 
 
 **production** mode:
 
-- append the flag `-prod` to your `grunt` command
-- specify your full experiments in `config/production.json`
-- use when running experiments for real
-- the file-sync is real
-- has auto-notification to Slack channel
+- 将 `-prod` 标志附加到 `grunt` 命令
+- 在 `config/production.json` 中指定你的完整实验
+- 运行实验时使用
+- 文件同步是真实的
+- 自动通知Slack频道
 
 
-## Run Remotely
+## 远程运行 Run Remotely
 
-If you're using a remote server, run the commands inside a `screen`. That is, log in via ssh, start a screen, run, then detach screen.
+如果您正在使用远程服务器，请在 `screen` 下运行命令。 也就是说，通过 `ssh` 登录，启动屏幕，运行，然后分离屏幕。
 
 ```shell
 # enter the screen with the name "lab"
@@ -86,7 +84,7 @@ screen -r lab
 # use Cmd+D to terminate screen when lab ends
 ```
 
-Since a remote server is away, you should check the system status occasionally to ensure no overrunning processes (memory growth, large processes, overheating). Use [`glances`](https://github.com/nicolargo/glances) (already installed in `bin/setup`) to monitor your expensive machines.
+由于远程服务器不在，您应该偶尔检查系统状态，以确保没有超出进程（内存增长，大进程，过热）。 使用 [`glances`](https://github.com/nicolargo/glances) （已经安装在`bin/setup`中）来监控昂贵的机器。
 
 <aside class="notice">
 To monitor your system (CPU, RAM, GPU), run <code>glances</code>
@@ -96,9 +94,9 @@ To monitor your system (CPU, RAM, GPU), run <code>glances</code>
 *Glances on remote server beast.*
 
 
-## Resume Lab
+## 恢复实验室 Resume Lab
 
-Experiments take a long time to complete, and if your process gets terminated, resuming the lab is trivial with a `-resume` flag: `grunt -prod -remote -resume`. This will use the `config/history.json`:
+实验需要很长时间才能完成，如果您的进程被终止，则恢复实验室是一个简单的 `-resume` 标志：`grunt -prod -remote -resume`。 这将使用 `config/history.json`：
 
 ```json
 {
@@ -106,14 +104,14 @@ Experiments take a long time to complete, and if your process gets terminated, r
 }
 ```
 
-The `config/history.json` is created in the last run that maps `experiment_name`s to `experiment_id`s, and resume any incomplete experiments based on that `experiment_id`. You can manually tweak the file to set the resume target of course.
+`config/history.json` 在最后一次运行中创建，将`experiment_name` 映射为 `experimental_id` ，并根据`experiment_id` 恢复任何不完整的实验。 当然可以手动调整文件来设置恢复目标。
 
 
 ## <a name="grunt-cmd"></a>Grunt Command Reference
 
-By default the `grunt` command (no task or flag) runs the lab in `development` mode using `config/default.json`.
+默认情况下，`grunt` 命令（没有任务或标志）使用 `config/default.json` 在 `development` 模式下运行实验室。
 
-The basic grunt command pattern is
+基本的grunt命令模式是
 
 ```shell
 grunt <task> -<flag>
@@ -154,13 +152,13 @@ The `<flag>`s are:
 
 ## <a name="python-cmd"></a>Python Command Reference
 
-The Python command is invoked inside `Gruntfile.js` under the `composeCommand` function. Change it if you need to.
+Python命令在 `gruntfile.js` 下的 `composeCommand` 函数下调用。 如果需要，请更改。
 
 <aside class="notice">
-Remember to activate virtualenv/conda when using plain python commands.
+记住在使用普通的python命令时激活virtualenv / conda。
 </aside>
 
-The basic python command pattern is:
+基本的 python 命令模式是：
 
 ```shell
 python3 main.py -<flag>
