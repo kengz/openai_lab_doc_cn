@@ -1,20 +1,20 @@
-# <a name="installation"></a>Installation
+# <a name="installation"></a>安装
 
-**1\.** **clone the repo**
+**1\.** **克隆资源库**
 
 `git clone https://github.com/kengz/openai_lab.git`
 
-*If you plan to commit code, fork this repo then clone it instead.*
+*如果您计划提交代码，请将此资源库替换为克隆代码。*
 
 
-**2\.** **install dependencies**
+**2\.** **安装依赖关系**
 
-Run the following commands to install:
+运行以下命令进行安装：
 
-- the system dependencies depending on your OS
-- the project dependencies
+- 系统依赖于您的操作系统
+- 项目依赖关系
 
-*For quick repeated setup on remote servers, instead of these commands, run the equivalent setup script: `./bin/setup`*
+*要在远程服务器上快速重复设置，而不是使用这些命令，请运行等效的安装脚本： `./bin/setup`*
 
 ```shell
 # cd into project directory
@@ -60,32 +60,32 @@ source activate openai_lab
 ```
 
 
-**3\.** **setup config files**
+**3\.** **设置配置文件**
 
-Run `./bin/copy-config`. This will create the config files from template, needed for lab [usage](#usage):
+运行 `./bin/copy-config`。 这将从模板创建配置文件，需要 Lab 使用 [usage](#usage):
 
-- `config/default.json` for local development, used when `grunt` is ran without a production flag.
-- `config/production.json` for production lab run when `grunt -prod` is ran with the production flag `-prod`.
+- `config/default.json` 用于本地开发，当 `grunt` 在没有 `-prod` 生产标志的情况下运行时使用。
+- `config/production.json` 当 `grunt -prod` 与生产标志`-prod`一起运行时，用于生产 Lab 运行。
 
 
-## <a name="quickstart"></a>Quickstart
+## <a name="quickstart"></a>快速入门
 
-The Lab comes with experiments with the best found solutions. Run your first below.
+实验室 Lab 带有最佳解决方案的实验。在下面运行你的第一个。
 
 
 ### Single Trial
 
-Run the single best trial for an experiment using lab command: `grunt -best`
+使用 Lab 命令运行单一最佳试验：`grunt -best`
 
-Alternatively, the plain python command invoked above is: `python3 main.py -e quickstart_dqn`
+或者，上面引用的简单python命令是：`python3 main.py -e quickstart_dqn`
 
 <aside class="notice">
-Remember to activate virtualenv/conda when using plain python commands.
+记住在使用普通的python命令时激活 virtualenv / conda。
 </aside>
 
-Then check your `./data/` folder for graphs and data files.
+然后检查您的 `./data/` 文件夹中的图形和数据文件。
 
-The grunt command is recommended as it's easier to schedule and run multiple experiments with. It sources from `config/default.json`, which should now have `quickstart_dqn`; more can be added.
+建议使用grunt命令，因为更容易安排和运行多个实验。 它来自 `config/default.json` ，现在应该有 `quickstart_dqn`; 更多可以添加。
 
 ```json
 {
@@ -98,14 +98,14 @@ The grunt command is recommended as it's easier to schedule and run multiple exp
 }
 ```
 
-This trial is the best [found solution agent](https://github.com/kengz/openai_lab/pull/73) of `DQN` solving `Cartpole-v0`. You should see the Lab running like so:
+这个试验是 `DQN` 解决 `Cartpole-v0` 的最好的找到的解决方案代理 [the best found solution agent](https://github.com/kengz/openai_lab/pull/73)。 你应该看到实验室运行如下：
 
 ![](./images/lab_demo_dqn.gif "Timelapse of OpenAI Lab")
 
 
 ### Experiment with Multiple Trials
 
-Next step is to run a small experiment that searches for the best trial solutions.
+下一步是运行一个小型实验，搜索最佳的试用解决方案。
 
 ```json
 {
@@ -124,33 +124,33 @@ Next step is to run a small experiment that searches for the best trial solution
 }
 ```
 
-This is under under `quickstart_dqn` in `rl/spec/classic_experiment_specs.json`. The experiment studies the effect of varying learning rate `lr` and the DQN neural net architecture `hidden_layers`. If you like, change the `param_range` to try more values.
+这位于 `rl/spec/classic_experiment_specs.json` 的 `quickstart_dqn` 下。 实验研究了不同学习率 `lr` 和 DQN 神经网络架构 `hidden_layers` 的影响。 如果您愿意，请更改 `param_range` 以尝试更多的值。
 
-Then, run: `grunt`
+然后，运行：`grunt`
 
-Alternatively the plain python command is: `python3 main.py -bp -e dqn`
+或者，简单的python命令是：`python3 main.py -bp -e dqn`
 
-Then check your `./data/` folder for graphs and data files.
+然后检查您的 `./data/` 文件夹中的图形和数据文件。
 
-The experiment will take about 15 minutes (depending on your machine). It will produce experiment data from the trials. Refer to [Analysis](#analysis) on how to interpret them.
-
-
-### Next Up
-
-We recommend:
-
-- Continue reading below for the optional installation steps.
-- [Solutions](#solutions) to see some existing solutions to start your agent from, as well as find environments/high scores to beat.
-- [Agents](#agents) on how to create your agents from existing components, then add your own.
-- [Usage](#usage) to continue reading the doc.
+实验需要约15分钟（取决于您的机器）。 它将从试验中产生实验数据。参考分析 [Analysis](#analysis) 如何解释它们。
 
 
-## Updating Lab
+### 下一个
 
-Check the Lab's latest [release versions here](https://github.com/kengz/openai_lab/releases).
+我们推荐：
 
-- If you cloned directly the Lab, update with `git pull`
-- If you forked, [setup a remote](https://help.github.com/articles/configuring-a-remote-for-a-fork/) and [update fork](https://help.github.com/articles/syncing-a-fork/)
+- 继续阅读下面的可选安装步骤。
+- 解决方案 [Solutions](#solutions) ，查看一些现有的解决方案来启动您的代理商，以及找到环境/高分以打败。
+- 代理 [Agents](#agents) 关于如何从现有组件创建代理，然后添加您自己的。
+- 用法 [Usage](#usage) 继续阅读文档。
+
+
+## 更新实验室
+
+检查实验室的最新发布版本 [release versions here](https://github.com/kengz/openai_lab/releases).
+
+- 如果您直接克隆Lab，请用`git pull`更新
+- 如果你分叉，设置远程 [setup a remote](https://help.github.com/articles/configuring-a-remote-for-a-fork/) 和 [update fork](https://help.github.com/articles/syncing-a-fork/)
 
 ```shell
 # update direct clone
@@ -162,38 +162,39 @@ git merge upstream/master
 ```
 
 
-## Setup Data Auto-sync
+## 设置数据自动同步
 
-We find it extremely useful to have data file-sync when running the lab on a remote server. This allows us to have a live view of the experiment graphs and data on our Dropbox app, on a computer or a smartphone.
+在远程服务器上运行实验室时，我们发现数据文件同步非常有用。 这使我们可以在我们的Dropbox应用程序，计算机或智能手机上实时查看实验图和数据。
 
-For auto-syncing lab `data/` we use [Grunt](http://gruntjs.com/) file watcher for automatically copying data files to Dropbox. In your dropbox, set up a shared folder `~/Dropbox/openai_lab/data` and sync to desktop.
+对于自动同步实验室 `data/`，我们使用[Grunt](http://gruntjs.com/)文件监视器将数据文件自动复制到Dropbox。 在你的收件箱中，设置一个共享文件夹 `~/Dropbox/openai_lab/data` 并同步到桌面。
 
-Setup the config key `data_sync_destination` in `config/{default.json, production.json}`.
+在 `config / {default.json，production.json}` 中设置配置密钥 `data_sync_destination`。
+
 
 <aside class="notice">
-This step is optional; needed only when running production mode.
+这一步是可选的; 仅在运行生产模式时才需要。
 </aside>
 
 
-## Setup Auto-notification
+## 设置自动通知
 
-Experiments take a while to run, and we find it useful also to be notified automatically on completion. We use [noti](https://github.com/variadico/noti), which is also installed with `bin/setup`.
+实验需要一段时间才能运行，我们发现完成后会自动通知实验。 我们使用 [noti](https://github.com/variadico/noti)，它也随 `bin/setup` 一起安装。
 
-Set up a Slack, create a new channel `#rl_monitor`, and get a [Slack bot token](https://my.slack.com/services/new/bot).
+设置一个Slack，创建一个新的通道 `#rl_monitor`，并获得一个 [Slack bot token](https://my.slack.com/services/new/bot).
 
-Setup the config keys `NOTI_SLACK_DEST`, `NOTI_SLACK_TOK` in `config/{default.json, production.json}`.
+在 `config/{default.json, production.json}`中设置配置键 `NOTI_SLACK_DEST`, `NOTI_SLACK_TOK`。
 
 <aside class="notice">
-This step is optional; useful when running production mode.
+这一步是可选的; 运行生产模式时很有用。
 </aside>
 
 ![](./images/noti.png "Notifications from the lab running on our remote server beast")
 _Notifications from the lab running on our remote server beast._
 
 
-## Hardware
+## 硬件
 
-For setting up your own hardware, especially with a GPU, googling will help more than we could. Also, setup is usually non-trivial since there're so many moving parts. Here's the recommended references:
+为了设置自己的硬件，特别是使用GPU，谷歌搜索将帮助我们更多的可能。 另外，设置通常是不平凡的，因为有这么多移动部件。 以下是推荐的参考文献：
 
 - [A ~$1000 PC build](https://pcpartpicker.com/list/xdbWBP) (more expensive now ~$1200; buy your parts during Black Friday/sales.)
 - [The official TensorFlow installation guide, with GPU setup info](https://www.tensorflow.org/install/install_linux)
